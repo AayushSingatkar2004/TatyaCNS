@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cryptography Practicals</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 90%;
+            max-width: 700px;
+        }
+        .practical {
+            background-color: gray;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 18px;
+        }
+        .practical:hover {
+            background-color: rgb(193, 193, 193);
+        }
+        .copied {
+            color: green;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cryptography Practicals</h1>
+    <div class="container">
+        <div class="practical" onclick="copyCode('euclid')">
+            1. Euclid's and Extended Euclid's Algorithm
+            <div id="copied-euclid" class="copied">Copied!</div>
+        </div>
+        <div class="practical" onclick="copyCode('frequency')">
+            2. Frequency Analysis of Letters
+            <div id="copied-frequency" class="copied">Copied!</div>
+        </div>
+        <div class="practical" onclick="copyCode('caesar')">
+            3. Caesar Cipher (Mono-alphabetic Cipher)
+            <div id="copied-caesar" class="copied">Copied!</div>
+        </div>
+        <div class="practical" onclick="copyCode('columnar')">
+            4. Columnar Transposition Cipher
+            <div id="copied-columnar" class="copied">Copied!</div>
+        </div>
+        <div class="practical" onclick="copyCode('radix64')">
+            5. Radix-64 Encoding
+            <div id="copied-radix64" class="copied">Copied!</div>
+        </div>
+        <div class="practical" onclick="copyCode('rsa')">
+            6. RSA Algorithm (Key Generation, Encryption, Decryption)
+            <div id="copied-rsa" class="copied">Copied!</div>
+        </div>
+        <div class="practical" onclick="copyCode('dh')">
+            7. Diffie-Hellman Key Exchange (with MITM)
+            <div id="copied-dh" class="copied">Copied!</div>
+        </div>
+        <div class="practical" onclick="copyCode('signature')">
+            8. Digital Signature
+            <div id="copied-signature" class="copied">Copied!</div>
+        </div>
+    </div>
+
+    <script>
+        const codes = {
+            euclid: `# Euclid's Algorithm
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+# Extended Euclid's Algorithm
+def extended_gcd(a, b):
+    if b == 0:
+        return a, 1, 0
+    gcd, x1, y1 = extended_gcd(b, a % b)
+    x = y1
+    y = x1 - (a // b) * y1
+    return gcd, x, y
+
+a = 30
+b = 20
+print("GCD:", gcd(a, b))
+gcd_val, x, y = extended_gcd(a, b)
+print("Extended GCD: gcd =", gcd_val, ", x =", x, ", y =", y)`,
+            
+            frequency: `# Frequency of letters from file
+def letter_frequency(filename):
+    freq = {}
+    with open(filename, 'r') as file:
+        text = file.read().lower()
+        for char in text:
+            if 'a' <= char <= 'z':
+                freq[char] = freq.get(char, 0) + 1
+    return freq
+
+for i in range(1, 4):
+    filename = f"file{i}.txt"
+    print(f"Letter frequency in {filename}:")
+    print(letter_frequency(filename))
+    print()`,
+            
+            caesar: `# Caesar Cipher
+def encrypt(text, shift):
+    result = ""
+    for char in text:
+        if char.isalpha():
+            shift_base = ord('A') if char.isupper() else ord('a')
+            result += chr((ord(char) - shift_base + shift) % 26 + shift_base)
+        else:
+            result += char
+    return result
+
+def decrypt(ciphertext, shift):
+    return encrypt(ciphertext, -shift)
+
+message = "HELLO WORLD"
+key = 3
+ciphertext = encrypt(message, key)
+print("Encrypted:", ciphertext)
+print("Decrypted:", decrypt(ciphertext, key))`,
+            
+            columnar: `# Columnar Transposition Cipher
+def encrypt(message, key):
+    num_of_columns = len(key)
+    ciphertext = [''] * num_of_columns
+    for col in range(num_of_columns):
+        pointer = col
+        while pointer < len(message):
+            ciphertext[col] += message[pointer]
+            pointer += num_of_columns
+    return ''.join(ciphertext)
+
+def decrypt(ciphertext, key):
+    num_of_columns = len(key)
+    num_of_rows = len(ciphertext) // num_of_columns
+    plaintext = [''] * num_of_rows
+    col = 0
+    row = 0
+    for symbol in ciphertext:
+        plaintext[row] += symbol
+        row += 1
+        if row == num_of_rows:
+            row = 0
+            col += 1
+    return ''.join(plaintext)
+
+message = "HELLO WORLD"
+key = "4312567"
+encrypted = encrypt(message.replace(" ", ""), key)
+print("Encrypted:", encrypted)
+print("Decrypted:", decrypt(encrypted, key))`,
+
+            radix64: `# Radix-64 (Base64) Encoding
+import base64
+
+def encode_base64(text):
+    message_bytes = text.encode('ascii')
+    base64_bytes = base64.b64encode(message_bytes)
+    return base64_bytes.decode('ascii')
+
+def decode_base64(encoded_text):
+    base64_bytes = encoded_text.encode('ascii')
+    message_bytes = base64.b64decode(base64_bytes)
+    return message_bytes.decode('ascii')
+
+message = "HELLO WORLD"
+encoded = encode_base64(message)
+print("Encoded:", encoded)
+print("Decoded:", decode_base64(encoded))`,
+
+            rsa: `# RSA Algorithm
+import random
+
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+def multiplicative_inverse(e, phi):
+    d_old, r_old = 0, phi
+    d_new, r_new = 1, e
+    while r_new != 0:
+        quotient = r_old // r_new
+        d_old, d_new = d_new, d_old - quotient * d_new
+        r_old, r_new = r_new, r_old - quotient * r_new
+    return d_old % phi
+
+def generate_keys():
+    p = 61
+    q = 53
+    n = p * q
+    phi = (p-1)*(q-1)
+    e = 17
+    d = multiplicative_inverse(e, phi)
+    return ((e, n), (d, n))
+
+def encrypt(pk, plaintext):
+    key, n = pk
+    cipher = [pow(ord(char), key, n) for char in plaintext]
+    return cipher
+
+def decrypt(pk, ciphertext):
+    key, n = pk
+    plain = [chr(pow(char, key, n)) for char in ciphertext]
+    return ''.join(plain)
+
+public, private = generate_keys()
+message = "HELLO"
+cipher = encrypt(public, message)
+print("Encrypted:", cipher)
+print("Decrypted:", decrypt(private, cipher))`,
+
+            dh: `# Diffie-Hellman Key Exchange
+def power(x, y, p):
+    res = 1
+    x = x % p
+    while y > 0:
+        if y & 1:
+            res = (res * x) % p
+        y = y >> 1
+        x = (x * x) % p
+    return res
+
+p = 23
+g = 5
+
+# Alice
+a = 6
+x = power(g, a, p)
+
+# Bob
+b = 15
+y = power(g, b, p)
+
+# Secret Key
+ka = power(y, a, p)
+kb = power(x, b, p)
+
+print("Secret Key for Alice:", ka)
+print("Secret Key for Bob:", kb)`,
+            
+            signature: `# Digital Signature
+import hashlib
+
+def hash_message(message):
+    return hashlib.sha256(message.encode()).hexdigest()
+
+def sign_message(message, private_key):
+    hashed = hash_message(message)
+    signature = pow(int(hashed, 16), private_key[0], private_key[1])
+    return signature
+
+def verify_signature(message, signature, public_key):
+    hashed = hash_message(message)
+    hashed_from_signature = pow(signature, public_key[0], public_key[1])
+    return int(hashed, 16) == hashed_from_signature
+
+public = (17, 3233)
+private = (2753, 3233)
+message = "HELLO"
+
+signature = sign_message(message, private)
+print("Digital Signature:", signature)
+
+is_valid = verify_signature(message, signature, public)
+print("Signature valid:", is_valid)`
+        };
+
+        function copyCode(practical) {
+            navigator.clipboard.writeText(codes[practical]).then(() => {
+                document.getElementById(`copied-${practical}`).style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById(`copied-${practical}`).style.display = 'none';
+                }, 1500);
+            });
+        }
+    </script>
+
+</body>
+</html>
