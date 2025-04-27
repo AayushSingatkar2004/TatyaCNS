@@ -76,6 +76,10 @@
             8. Digital Signature
             <div id="copied-signature" class="copied">Copied!</div>
         </div>
+        <div class="practical" onclick="copyCode('signature')">
+            8. PGP
+            <div id="copied-signature" class="copied">Copied!</div>
+        </div>
     </div>
 
     <script>
@@ -171,20 +175,23 @@ print("Decrypted:", decrypt(encrypted, key))`,
             radix64: `# Radix-64 (Base64) Encoding
 import base64
 
-def encode_base64(text):
-    message_bytes = text.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    return base64_bytes.decode('ascii')
+import base64
 
-def decode_base64(encoded_text):
-    base64_bytes = encoded_text.encode('ascii')
-    message_bytes = base64.b64decode(base64_bytes)
-    return message_bytes.decode('ascii')
+# Encode a string into radix-64
+import base64
 
-message = "HELLO WORLD"
-encoded = encode_base64(message)
-print("Encoded:", encoded)
-print("Decoded:", decode_base64(encoded))`,
+message = input("Enter a message: ")
+
+# Encode
+encoded = base64.b64encode(message.encode())
+print("Encoded (Radix-64):", encoded.decode())
+
+# Decode
+decoded = base64.b64decode(encoded)
+print("Decoded Message:", decoded.decode())
+
+print("Performed by:Aayush Singatkar")
+`,
 
             rsa: `# RSA Algorithm
 def gcd(a, b):
@@ -295,7 +302,28 @@ signature = sign_message(message, private)
 print("Digital Signature:", signature)
 
 is_valid = verify_signature(message, signature, public)
-print("Signature valid:", is_valid)`
+print("Signature valid:", is_valid)`,
+            pgp:`#PGP 
+# Simple XOR encryption function
+def xor_encrypt_decrypt(data, key):
+    return ''.join(chr(ord(c) ^ key) for c in data)
+
+# 1. Message to encrypt
+message = "Hello, this is a secure email!"
+key = 123  # The key for XOR encryption/decryption
+
+# 2. Encrypt the message (XOR)
+encrypted_message = xor_encrypt_decrypt(message, key)
+
+# 3. Print the encrypted message
+print("Encrypted Email:\n" + encrypted_message)
+
+# 4. Decrypt the message (XOR)
+decrypted_message = xor_encrypt_decrypt(encrypted_message, key)
+
+# 5. Print the decrypted message
+print("\nDecrypted Email:\n" + decrypted_message)            
+`
         };
 
         function copyCode(practical) {
