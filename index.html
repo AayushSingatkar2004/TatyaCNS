@@ -80,6 +80,10 @@
             9. PGP
             <div id="copied-signature" class="copied">Copied!</div>
         </div>
+        <div class="practical" onclick="copyCode('signature')">
+            10. Case Study on System Security Tools
+            <div id="copied-signature" class="copied">Copied!</div>
+        </div>
     </div>
 
     <script>
@@ -303,6 +307,7 @@ print("Digital Signature:", signature)
 
 is_valid = verify_signature(message, signature, public)
 print("Signature valid:", is_valid)`,
+            
             pgp:`#PGP 
 # Simple XOR encryption function
 def xor_encrypt_decrypt(data, key):
@@ -323,7 +328,63 @@ decrypted_message = xor_encrypt_decrypt(encrypted_message, key)
 
 # 5. Print the decrypted message
 print("\nDecrypted Email:\n" + decrypted_message)            
-`
+`,
+            caseStudy: `Case Study on System Security Tools
+
+Introduction:
+System security is a critical concern in the modern digital era, where cyberattacks and data breaches have become increasingly common. System security tools are essential to mitigate risks, monitor system health, and prevent unauthorized access or malicious activities. This case study aims to provide insights into various system security tools, including firewalls, antivirus software, intrusion detection systems (IDS), and encryption tools, along with practical examples of their usage.
+1. Antivirus Software:
+Purpose:
+Antivirus software is designed to detect, prevent, and remove malicious software (malware), including viruses, worms, and Trojans, from a computer system.
+Tool Used:
+•	Example Tool: Windows Defender (for Windows)
+•	Other Tools: Norton, McAfee, Kaspersky
+Practical Application:
+1.	Installation: Windows Defender comes pre-installed on Windows systems. It automatically scans files for malware.
+2.	Scan Options: Users can initiate a quick scan, full scan, or custom scan to check for specific files or folders.
+3.	Real-Time Protection: Continuous monitoring of files to detect malicious behavior and block attacks in real-time.
+4.	Updates: Regularly updated virus definitions to detect newly discovered threats.
+Outcome:
+Antivirus tools like Windows Defender successfully detect known threats and prevent malware from executing on the system. It is a proactive measure for continuous system protection.
+2. Firewall:
+Purpose:
+A firewall is a network security system designed to monitor and control incoming and outgoing network traffic based on predetermined security rules. It acts as a barrier between trusted internal networks and untrusted external networks.
+Tool Used:
+•	Example Tool: pfSense (open-source firewall and router)
+•	Other Tools: Windows Firewall, Cisco ASA
+Practical Application:
+1.	Configuration: pfSense can be installed on a dedicated machine to manage network traffic. Users configure rules to allow or block specific IP addresses, ports, or protocols.
+2.	Traffic Monitoring: It allows for real-time monitoring of network traffic to detect suspicious activities.
+3.	Blocking Attacks: Prevents common attacks like DDoS and unauthorized access by filtering packets based on rules.
+Outcome:
+By deploying pfSense, network traffic is effectively filtered, unauthorized access is blocked, and attack vectors like port scanning are prevented.
+3. Intrusion Detection System (IDS):
+Purpose:
+An Intrusion Detection System (IDS) is used to detect any malicious activity or policy violations within a network or system. It alerts administrators about potential security breaches.
+Tool Used:
+•	Example Tool: Snort (open-source IDS)
+•	Other Tools: Suricata, OSSEC
+Practical Application:
+1.	Configuration: Snort is installed on the network and configured to monitor traffic. It is set to detect various types of attacks such as SQL injection, buffer overflow, and malware traffic.
+2.	Detection: Snort analyzes network packets and generates alerts on suspicious traffic.
+3.	Alerting: When malicious activity is detected, Snort sends alerts to system administrators with details of the attack.
+Outcome:
+Using Snort as an IDS, the system can promptly detect and alert administrators of any malicious activities in real-time, thus reducing response time during attacks.
+
+4. Encryption Tools:
+Purpose:
+Encryption tools ensure data confidentiality by converting data into an unreadable format that can only be deciphered with the correct key. These tools are essential for protecting sensitive data.
+Tool Used:
+•	Example Tool: VeraCrypt (for file encryption)
+•	Other Tools: BitLocker (Windows), OpenSSL
+Practical Application:
+1.	File Encryption: VeraCrypt allows users to encrypt entire drives or specific files with strong encryption algorithms (AES, Serpent).
+2.	Password Protection: The encrypted data can only be accessed with a password or key, making it secure from unauthorized access.
+3.	Decryption: Once the password is provided, VeraCrypt decrypts the data for legitimate use.
+Outcome:
+Data encryption with VeraCrypt ensures that even if an attacker gains access to the storage medium, the data remains secure and unreadable without the decryption key.
+
+            `
         };
 
         function copyCode(practical) {
